@@ -6,11 +6,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @ToString
 @Table(name = "customers")
+@Entity
 public class Customer {
 
     @Id
@@ -27,4 +30,14 @@ public class Customer {
 
     @Column(name = "phone number")
     private String phoneNumber;
+
+    @OneToMany(mappedBy = "customer")
+    private List<Order> orders;
+
+    public Customer(String phoneNumber, String address, String email, String name) {
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.email = email;
+        this.name = name;
+    }
 }

@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @ToString
 @Table(name = "products")
+@Entity
 public class Product {
 
     @Id
@@ -30,6 +31,8 @@ public class Product {
     @Column(nullable = false)
     private Long stock;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id")
     private Category category;
 
     @Column(name = "creation date")
@@ -43,4 +46,8 @@ public class Product {
         this.description = description;
         this.name = name;
     }
+
+
+
+
 }

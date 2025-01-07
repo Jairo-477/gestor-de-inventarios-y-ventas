@@ -6,11 +6,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
+
 @Setter
 @Getter
 @NoArgsConstructor
 @ToString
 @Table(name = "categories")
+@Entity
 public class Category {
 
     @Id
@@ -22,6 +25,9 @@ public class Category {
 
     @Column(nullable = false)
     private String description;
+
+    @OneToMany(mappedBy = "category")
+    private List<Product> products;
 
     public Category(String name, String description) {
         this.name = name;

@@ -7,12 +7,14 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @ToString
 @Table(name = "orders")
+@Entity
 public class Order {
 
     @Id
@@ -26,6 +28,13 @@ public class Order {
 
     @Column(nullable = false)
     private Status status;
+
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
+
+    @OneToMany(mappedBy = "order")
+    private List<OrderDetails> orderDetailsList;
 
     public Order(LocalDateTime date, Double total, Status status) {
         this.date = date;

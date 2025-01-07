@@ -11,7 +11,8 @@ import org.springframework.stereotype.Service;
 @Setter
 @NoArgsConstructor
 @ToString
-@Table(name = "orders details")
+@Table(name = "orders_details")
+@Entity
 public class OrderDetails {
 
     @Id
@@ -23,6 +24,14 @@ public class OrderDetails {
 
     @Column(nullable = false)
     private Double subTotal;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
+
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
 
     public OrderDetails(Long quantity, Double subTotal) {
         this.quantity = quantity;
