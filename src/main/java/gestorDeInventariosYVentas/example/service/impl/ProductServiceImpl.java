@@ -1,9 +1,15 @@
 package gestorDeInventariosYVentas.example.service.impl;
 
+import gestorDeInventariosYVentas.example.dto.input.ProductInputDTO;
 import gestorDeInventariosYVentas.example.dto.output.ProductOutputDTO;
 import gestorDeInventariosYVentas.example.service.ProductService;
 
 public class ProductServiceImpl implements ProductService {
+
+    @Override
+    public ProductOutputDTO createProduct(ProductInputDTO productInputDTO) {
+        return null;
+    }
 
     @Override
     public String getStock(Long id) {
