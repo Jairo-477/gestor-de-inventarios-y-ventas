@@ -36,10 +36,11 @@ public class Order {
     @OneToMany(mappedBy = "order")
     private List<OrderDetails> orderDetailsList;
 
-    public Order(LocalDateTime date, Double total, Status status) {
+    public Order(LocalDateTime date, Double total, Status status, Customer customer) {
         this.date = date;
         this.total = total;
         this.status = status;
+        this.customer = customer;
     }
 
     public enum Status{
