@@ -15,8 +15,6 @@ public class OrderInputDTO {
 
     private LocalDateTime date;
 
-    private Double total;
-
     private Order.Status status;
 
     private Customer customer;
@@ -24,7 +22,6 @@ public class OrderInputDTO {
     public OrderInputDTO(Customer customer, Order.Status status, Double total, LocalDateTime date) {
         this.customer = customer;
         this.status = status;
-        this.total = total;
         this.date = date;
     }
 }

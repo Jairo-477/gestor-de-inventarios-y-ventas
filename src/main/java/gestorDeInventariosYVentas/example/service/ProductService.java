@@ -9,13 +9,13 @@ public interface ProductService {
 
     String getStock(Long id);
 
-    void reduceStock (int quantity);
+    void reduceStock (Long id,Long quantity);
 
-    void increaseStock(int quantity);
+    void increaseStock(Long id,Long quantity);
 
     String getPrice(Long id);
 
-    void updatePrice(Double newPrice);
+    void updatePrice(Long id,Double newPrice);
 
-    ProductOutputDTO getProduct();
+    ProductOutputDTO getProduct(Long id);
 }

@@ -36,9 +36,8 @@ public class Order {
     @OneToMany(mappedBy = "order")
     private List<OrderDetails> orderDetailsList;
 
-    public Order(LocalDateTime date, Double total, Status status, Customer customer) {
+    public Order(LocalDateTime date, Status status, Customer customer) {
         this.date = date;
-        this.total = total;
         this.status = status;
         this.customer = customer;
     }
