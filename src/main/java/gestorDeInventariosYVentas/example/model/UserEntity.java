@@ -41,7 +41,7 @@ public class UserEntity {
     @Column(name = "role") // Columna que almacena los roles
     private Set<rolesEnum> roles = new HashSet<>();
 
-    private enum rolesEnum{
+    public enum rolesEnum{
         ADMIN,
         CASHIER,
         SALES_MANAGER
