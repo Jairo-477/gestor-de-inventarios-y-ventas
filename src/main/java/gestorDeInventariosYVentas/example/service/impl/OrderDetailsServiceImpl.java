@@ -46,10 +46,11 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
         return orderDetailsMapper.toDto(orderDetails);
     }
 
+    //No se utiliza directamente, es invocada por otro método
     @Override
     public Double calculateSubTotal(Product product, Long quantity) {
 
-        Objects.requireNonNull(product, "Product cannot be null");
+        Objects.requireNonNull(product, "ID product cannot be null");
 
         Objects.requireNonNull(quantity, "Quantity must be greater than 0");
 
