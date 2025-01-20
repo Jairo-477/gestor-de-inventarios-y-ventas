@@ -2,32 +2,57 @@ package gestorDeInventariosYVentas.example.config;
 
 import gestorDeInventariosYVentas.example.config.filter.JwtTokenValidator;
 import gestorDeInventariosYVentas.example.service.impl.UserDetailsServiceImpl;
+import gestorDeInventariosYVentas.example.util.JwtUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final UserDetailsServiceImpl userDetailsService;
-    private final JwtTokenValidator jwtTokenValidator;
+    private final JwtUtils jwtUtils;
 
-    public SecurityConfig(UserDetailsServiceImpl userDetailsService, JwtTokenValidator jwtTokenValidator){
-        this.userDetailsService = userDetailsService;
-        this.jwtTokenValidator = jwtTokenValidator;
+    public SecurityConfig(JwtUtils jwtUtils){
+        this.jwtUtils = jwtUtils;
     }
 
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
+        return httpSecurity
+                .csrf(csrf ->csrf.disable())
+                .httpBasic(Customizer.withDefaults())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(http -> {
+                    //Configurar los endpoints publicos
+                    http.requestMatchers(HttpMethod.POST, "/api/v1/auth/**").permitAll();
+                    //Configurar los endpoints privados
+                    http.requestMatchers("/api/v1/categories/**").hasAnyRole("ADMIN","SALES_MANAGER");
+                    http.requestMatchers("/api/v1/customers/**").hasAnyRole("ADMIN","CASHIER","SALES_MANAGER");
+                    http.requestMatchers("/api/v1/orders-details/**").hasAnyRole("ADMIN","CASHIER","SALES_MANAGER");
+                    http.requestMatchers("/api/v1/orders/**").hasAnyRole("ADMIN","CASHIER","SALES_MANAGER");
+                    http.requestMatchers("/api/v1/products/**").hasAnyRole("ADMIN","SALES_MANAGER");
+                    //Configurar el resto de endpoints no especificados
+                    //Deja usar todos los demás endpoints si se está autenticado
+                    //http.anyRequest().authenticated();
 
+                    //Rechaza todos los demás así estén autenticados
+                    http.anyRequest().denyAll();
+                })
+                .addFilterBefore(new JwtTokenValidator(jwtUtils), BasicAuthenticationFilter.class)
+                .build();
     }
 
     @Bean
