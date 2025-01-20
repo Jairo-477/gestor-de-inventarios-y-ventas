@@ -33,13 +33,13 @@ public class OrderRestController {
         return ResponseEntity.ok().body("Total calculated successfully.");
     }
 
-    @PatchMapping("/{idOrder}/order-details/{idOrderDetails}")
+    @PatchMapping("/{idOrder}/add-order-details/{idOrderDetails}")
     public ResponseEntity<String> addOrderDetail(@PathVariable Long idOrder,@PathVariable Long idOrderDetails){
         orderService.addOrderDetail(idOrder,idOrderDetails);
         return ResponseEntity.ok().body("The orderDetails with ID " + idOrderDetails + " has been added to the order with ID " + idOrder);
     }
 
-    @PatchMapping("/{idOrder}/order-details/{idOrderDetails}")
+    @PatchMapping("/{idOrder}/remove-order-details/{idOrderDetails}")
     public ResponseEntity<String> removeOrderDetails(@PathVariable Long idOrder,@PathVariable Long idOrderDetails){
         orderService.removeOrderDetails(idOrder,idOrderDetails);
         return ResponseEntity.ok().body("The order details with ID " + idOrderDetails +

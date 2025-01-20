@@ -3,6 +3,7 @@ package gestorDeInventariosYVentas.example.config;
 import gestorDeInventariosYVentas.example.config.filter.JwtTokenValidator;
 import gestorDeInventariosYVentas.example.service.impl.UserDetailsServiceImpl;
 import gestorDeInventariosYVentas.example.util.JwtUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -23,11 +24,8 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final JwtUtils jwtUtils;
-
-    public SecurityConfig(JwtUtils jwtUtils){
-        this.jwtUtils = jwtUtils;
-    }
+    @Autowired
+    private  JwtUtils jwtUtils;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{

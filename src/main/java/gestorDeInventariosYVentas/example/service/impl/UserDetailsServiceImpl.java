@@ -36,9 +36,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private  UserEntityRepository userEntityRepository;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         //Buscar el usuario en la base de datos
