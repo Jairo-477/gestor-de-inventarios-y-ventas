@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/orders-details")
+@RequestMapping("/api/v1/orders-details")
 public class OrderDetailsRestController {
 
     private final OrderDetailsService orderDetailsService;
