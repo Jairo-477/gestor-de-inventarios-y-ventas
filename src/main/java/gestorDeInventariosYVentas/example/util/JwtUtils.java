@@ -66,8 +66,4 @@ public class JwtUtils {
     public Claim getSpecificClaim(DecodedJWT decodedJWT, String claimname){
         return decodedJWT.getClaim(claimname);
     }
-
-    public String extractRoles(DecodedJWT decodedJWT) {
-        return decodedJWT.getClaim("roles").asString(); // Extraer roles como string
-    }
 }

@@ -35,7 +35,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(http -> {
                     //Configurar los endpoints publicos
-                    http.requestMatchers(HttpMethod.POST, "/api/v1/auth/**").permitAll();
+                    http.requestMatchers("/api/v1/auth/**").permitAll();
                     //Configurar los endpoints privados
                     http.requestMatchers("/api/v1/categories/**").hasAnyRole("ADMIN","SALES_MANAGER");
                     http.requestMatchers("/api/v1/customers/**").hasAnyRole("ADMIN","CASHIER","SALES_MANAGER");
