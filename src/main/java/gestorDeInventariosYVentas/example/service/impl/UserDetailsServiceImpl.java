@@ -7,7 +7,6 @@ import gestorDeInventariosYVentas.example.model.UserEntity;
 import gestorDeInventariosYVentas.example.repository.UserEntityRepository;
 import gestorDeInventariosYVentas.example.util.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

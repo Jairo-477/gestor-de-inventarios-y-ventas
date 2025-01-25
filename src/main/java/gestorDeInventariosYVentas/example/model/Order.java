@@ -23,7 +23,6 @@ public class Order {
 
     private LocalDateTime date;
 
-    @Column(nullable = false)
     private Double total;
 
     @Column(nullable = false)

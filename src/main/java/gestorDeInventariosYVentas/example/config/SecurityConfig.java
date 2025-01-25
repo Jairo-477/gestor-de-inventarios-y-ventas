@@ -42,11 +42,7 @@ public class SecurityConfig {
                     http.requestMatchers("/api/v1/orders-details/**").hasAnyRole("ADMIN","CASHIER","SALES_MANAGER");
                     http.requestMatchers("/api/v1/orders/**").hasAnyRole("ADMIN","CASHIER","SALES_MANAGER");
                     http.requestMatchers("/api/v1/products/**").hasAnyRole("ADMIN","SALES_MANAGER");
-                    //Configurar el resto de endpoints no especificados
-                    //Deja usar todos los demás endpoints si se está autenticado
-                    //http.anyRequest().authenticated();
 
-                    //Rechaza todos los demás así estén autenticados
                     http.anyRequest().denyAll();
                 })
                 .addFilterBefore(new JwtTokenValidator(jwtUtils), BasicAuthenticationFilter.class)

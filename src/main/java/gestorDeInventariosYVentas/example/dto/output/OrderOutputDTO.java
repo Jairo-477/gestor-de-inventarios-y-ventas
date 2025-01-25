@@ -22,13 +22,13 @@ public class OrderOutputDTO {
 
     private Order.Status status;
 
-    private Customer customer;
+    private Long customerId;
 
-    public OrderOutputDTO(Long id, LocalDateTime date, Double total, Order.Status status, Customer customer) {
+    public OrderOutputDTO(Long id, LocalDateTime date, Double total, Order.Status status, Long customerIdO) {
         this.id = id;
         this.date = date;
         this.total = total;
         this.status = status;
-        this.customer = customer;
+        this.customerId = customerIdO;
     }
 }

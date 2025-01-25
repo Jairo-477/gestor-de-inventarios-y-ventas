@@ -15,7 +15,7 @@ public class OrderMapper {
                 order.getDate(),
                 order.getTotal(),
                 order.getStatus(),
-                order.getCustomer()
+                order.getCustomer().getId()
         );
     }
 
