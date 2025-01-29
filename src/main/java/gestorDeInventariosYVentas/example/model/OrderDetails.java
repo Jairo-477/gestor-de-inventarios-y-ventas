@@ -19,10 +19,8 @@ public class OrderDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
     private Long quantity;
 
-    @Column(nullable = false)
     private Double subTotal;
 
     @ManyToOne

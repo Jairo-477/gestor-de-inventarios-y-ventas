@@ -36,10 +36,20 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 
         OrderDetails orderDetails = orderDetailsMapper.toEntity(orderDetailsInputDTO);
 
-        Product product = productRepository.findById(orderDetails.getProduct().getId())
+        Product product = productRepository.findById(orderDetailsInputDTO.getProduct().getId())
                         .orElseThrow(()-> new  EntityNotFoundException("Product with ID " + orderDetails.getProduct().getId() + " not found"));
 
+        if (orderDetailsInputDTO.getQuantity() == null || orderDetailsInputDTO.getQuantity() <= 0) {
+            throw new IllegalArgumentException("Quantity must be greater than 0");
+        }
+
+        if (product.getPrice() == null) {
+            throw new IllegalStateException("The product price cannot be null");
+        }
+
         Double subtotal = calculateSubTotal(product, orderDetails.getQuantity());
+
+        orderDetails.setSubTotal(subtotal);
 
         orderDetailsRepository.save(orderDetails);
 
