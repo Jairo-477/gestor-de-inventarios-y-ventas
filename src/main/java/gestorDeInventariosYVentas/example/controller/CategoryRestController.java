@@ -29,4 +29,9 @@ public class CategoryRestController {
     public ResponseEntity<List<ProductOutputDTO>> getProductsByCategory(@PathVariable Long id){
         return ResponseEntity.ok(categoryService.getProductsByCategory(id));
     }
+
+    @GetMapping
+    public ResponseEntity<List<CategoryOutputDTO>> getAllCategories(){
+        return ResponseEntity.ok(categoryService.getAllCategories());
+    }
 }

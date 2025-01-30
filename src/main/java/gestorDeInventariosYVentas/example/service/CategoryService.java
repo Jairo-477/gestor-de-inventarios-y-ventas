@@ -11,4 +11,6 @@ public interface CategoryService {
     CategoryOutputDTO createCategory (CategoryInputDTO categoryInputDTO);
 
     List<ProductOutputDTO> getProductsByCategory(Long id);
+
+    List<CategoryOutputDTO> getAllCategories();
 }

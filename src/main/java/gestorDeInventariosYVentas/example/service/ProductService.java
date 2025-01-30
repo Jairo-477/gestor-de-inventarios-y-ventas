@@ -3,6 +3,8 @@ package gestorDeInventariosYVentas.example.service;
 import gestorDeInventariosYVentas.example.dto.input.ProductInputDTO;
 import gestorDeInventariosYVentas.example.dto.output.ProductOutputDTO;
 
+import java.util.List;
+
 public interface ProductService {
 
     ProductOutputDTO createProduct (ProductInputDTO productInputDTO);
@@ -18,4 +20,6 @@ public interface ProductService {
     void updatePrice(Long id,Double newPrice);
 
     ProductOutputDTO getProduct(Long id);
+
+    List<ProductOutputDTO> getAllProducts();
 }

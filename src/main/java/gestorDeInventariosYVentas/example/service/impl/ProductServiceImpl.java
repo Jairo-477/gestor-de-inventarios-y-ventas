@@ -9,7 +9,9 @@ import gestorDeInventariosYVentas.example.service.ProductService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -105,5 +107,12 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findById(id)
                 .map(productMapper::toDto)
                 .orElseThrow(()-> new EntityNotFoundException("Product with ID " + id + " not found"));
+    }
+
+    @Override
+    public List<ProductOutputDTO> getAllProducts() {
+        return productRepository.findAll().stream()
+                .map(productMapper::toDto)
+                .collect(Collectors.toList());
     }
 }

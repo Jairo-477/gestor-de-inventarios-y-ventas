@@ -69,4 +69,11 @@ public class CustomerServiceImpl implements CustomerService {
 
         return customerMapper.toDto(customer);
     }
+
+    @Override
+    public List<CustomerOutputDTO> getAllCustomers() {
+        return customerRepository.findAll().stream()
+                .map(customerMapper::toDto)
+                .collect(Collectors.toList());
+    }
 }

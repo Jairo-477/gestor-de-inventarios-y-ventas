@@ -39,4 +39,9 @@ public class CustomerRestController {
     public ResponseEntity<CustomerOutputDTO> getCustomer(@PathVariable Long id){
         return ResponseEntity.ok(customerService.getCustomer(id));
     }
+
+    @GetMapping
+    public ResponseEntity<List<CustomerOutputDTO>> getAllCustomers(){
+        return ResponseEntity.ok(customerService.getAllCustomers());
+    }
 }

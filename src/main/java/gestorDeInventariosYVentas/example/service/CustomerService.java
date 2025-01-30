@@ -16,5 +16,6 @@ public interface CustomerService {
 
     CustomerOutputDTO getCustomer(Long id);
 
+    List<CustomerOutputDTO> getAllCustomers();
 
 }

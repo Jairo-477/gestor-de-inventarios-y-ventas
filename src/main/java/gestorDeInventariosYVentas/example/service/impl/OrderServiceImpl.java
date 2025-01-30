@@ -166,4 +166,23 @@ public class OrderServiceImpl implements OrderService {
                 .map(orderDetailsMapper::toDto)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public OrderOutputDTO completeOrder(Long id) {
+        Objects.requireNonNull(id,"ID cannot be null");
+
+        Order order = orderRepository.findById(id)
+                .orElseThrow(()-> new EntityNotFoundException("Order with ID " + id + " not found"));
+
+        order.setStatus(Order.Status.COMPLETED);
+
+        return orderMapper.toDto(order);
+    }
+
+    @Override
+    public List<OrderOutputDTO> GetAllOrders() {
+        return orderRepository.findAll().stream()
+                .map(orderMapper::toDto)
+                .collect(Collectors.toList());
+    }
 }

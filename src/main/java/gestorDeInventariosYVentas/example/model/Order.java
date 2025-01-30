@@ -37,7 +37,7 @@ public class Order {
 
     public Order(LocalDateTime date, Status status, Customer customer) {
         this.date = date;
-        this.status = status;
+        this.status = Status.PENDING;
         this.customer = customer;
     }
 

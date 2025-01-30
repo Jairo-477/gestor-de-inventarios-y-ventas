@@ -66,4 +66,14 @@ public class OrderRestController {
     public ResponseEntity<List<OrderDetailsOutputDTO>> getOrdersDetailsByOrder(@PathVariable Long id){
         return ResponseEntity.ok().body(orderService.getOrdersDetailsByOrder(id));
     }
+
+    @PatchMapping("/{id}/completeOrder")
+    public ResponseEntity<OrderOutputDTO> completeOrder(@PathVariable Long id){
+        return ResponseEntity.ok(orderService.completeOrder(id));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<OrderOutputDTO>> GetAllOrders(){
+        return ResponseEntity.ok(orderService.GetAllOrders());
+    }
 }

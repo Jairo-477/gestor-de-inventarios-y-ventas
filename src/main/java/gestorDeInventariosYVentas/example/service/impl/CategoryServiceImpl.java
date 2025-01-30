@@ -49,4 +49,11 @@ public class CategoryServiceImpl implements CategoryService {
                 .map(productMapper::toDto)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<CategoryOutputDTO> getAllCategories() {
+        return categoryRepository.findAll().stream()
+                .map(categoryMapper::toDto)
+                .collect(Collectors.toList());
+    }
 }

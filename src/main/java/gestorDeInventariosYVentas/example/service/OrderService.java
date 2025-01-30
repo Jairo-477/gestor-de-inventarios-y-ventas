@@ -26,4 +26,8 @@ public interface OrderService {
     OrderOutputDTO getOrder(Long id);
 
     List<OrderDetailsOutputDTO> getOrdersDetailsByOrder(Long id);
+
+    OrderOutputDTO completeOrder(Long id);
+
+    List<OrderOutputDTO> GetAllOrders();
 }
