@@ -22,11 +22,11 @@ public class ProductOutputDTO {
 
     private Long stock;
 
-    private Category category;
+    private Long category;
 
     private LocalDateTime creationDate;
 
-    public ProductOutputDTO(Long id, String name, String description, Double price, Long stock, Category category, LocalDateTime creationDate) {
+    public ProductOutputDTO(Long id, String name, String description, Double price, Long stock, Long category, LocalDateTime creationDate) {
         this.id = id;
         this.name = name;
         this.description = description;

@@ -14,8 +14,8 @@ public class OrderDetailsMapper {
                 orderDetails.getId(),
                 orderDetails.getQuantity(),
                 orderDetails.getSubTotal(),
-                orderDetails.getProduct(),
-                orderDetails.getOrder()
+                orderDetails.getProduct().getId(),
+                orderDetails.getOrder().getId()
         );
     }
 

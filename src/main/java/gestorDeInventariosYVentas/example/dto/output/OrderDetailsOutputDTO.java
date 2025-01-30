@@ -17,11 +17,11 @@ public class OrderDetailsOutputDTO {
 
     private Double subTotal;
 
-    private Product product;
+    private Long product;
 
-    private Order order;
+    private Long order;
 
-    public OrderDetailsOutputDTO(Long id, Long quantity, Double subTotal, Product product, Order order) {
+    public OrderDetailsOutputDTO(Long id, Long quantity, Double subTotal, Long product, Long order) {
         this.id = id;
         this.quantity = quantity;
         this.subTotal = subTotal;

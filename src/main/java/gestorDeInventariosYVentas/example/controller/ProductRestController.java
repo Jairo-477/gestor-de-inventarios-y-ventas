@@ -36,7 +36,7 @@ public class ProductRestController {
     }
 
     @PatchMapping("/{id}/increases/{quantity}")
-    public ResponseEntity<String> increaseStock(Long id,Long quantity){
+    public ResponseEntity<String> increaseStock(@PathVariable Long id,@PathVariable Long quantity){
         productService.increaseStock(id, quantity);
         return ResponseEntity.ok().body("The stock of the product with ID " + id + " has been increased.");
     }
