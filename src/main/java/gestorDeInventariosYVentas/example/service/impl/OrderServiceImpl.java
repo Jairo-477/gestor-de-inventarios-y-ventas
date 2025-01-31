@@ -68,11 +68,13 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderRepository.findById(id)
                 .orElseThrow(()-> new EntityNotFoundException("Order with ID " + id + " not found"));
 
-        Double sum =  order.getOrderDetailsList().stream()
+        double sum =  order.getOrderDetailsList().stream()
                 .mapToDouble(OrderDetails::getSubTotal)
                 .sum();
 
         order.setTotal(sum * 1.19);
+
+        orderRepository.save(order);
     }
 
     @Override
@@ -117,19 +119,6 @@ public class OrderServiceImpl implements OrderService {
         }else{
             throw new IllegalArgumentException("The specified OrderDetails does not exist in the list of this order.");
         }
-    }
-
-    @Override
-    @Transactional
-    public void changeStatus(Long id,Order.Status newStatus) {
-        Objects.requireNonNull(id,"ID cannot be null");
-
-        Order order = orderRepository.findById(id)
-                .orElseThrow(()-> new  EntityNotFoundException("Order with ID " + id + " not found"));
-
-        order.setStatus(newStatus);
-
-        orderRepository.save(order);
     }
 
     @Override

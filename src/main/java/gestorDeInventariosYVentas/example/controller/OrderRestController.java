@@ -27,7 +27,7 @@ public class OrderRestController {
         return ResponseEntity.status(HttpStatus.CREATED).body(orderService.createOrder(orderInputDTO));
     }
 
-    @GetMapping("/total/{id}")
+    @PatchMapping("/total/{id}")
     public ResponseEntity<String> calculateTotal(@PathVariable Long id){
         orderService.calculateTotal(id);
         return ResponseEntity.ok().body("Total calculated successfully.");
@@ -44,12 +44,6 @@ public class OrderRestController {
         orderService.removeOrderDetails(idOrder,idOrderDetails);
         return ResponseEntity.ok().body("The order details with ID " + idOrderDetails +
                 " has been removed from the order with ID " + idOrder);
-    }
-
-    @PatchMapping("/{id}/status/{newStatus}")
-    public ResponseEntity<String> changeStatus(@PathVariable Long id,@PathVariable Order.Status newStatus){
-        orderService.changeStatus(id, newStatus);
-        return ResponseEntity.ok().body("The status of the order with ID " + id +  " has been updated");
     }
 
     @GetMapping("/customer/{id}")

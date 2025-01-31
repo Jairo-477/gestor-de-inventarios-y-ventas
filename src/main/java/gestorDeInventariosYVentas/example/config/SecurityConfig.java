@@ -36,6 +36,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(http -> {
                     //Configurar los endpoints publicos
                     http.requestMatchers("/api/v1/auth/**").permitAll();
+                    http.requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll();
                     //Configurar los endpoints privados
                     http.requestMatchers("/api/v1/categories/**").hasAnyRole("ADMIN","SALES_MANAGER");
                     http.requestMatchers("/api/v1/customers/**").hasAnyRole("ADMIN","CASHIER","SALES_MANAGER");

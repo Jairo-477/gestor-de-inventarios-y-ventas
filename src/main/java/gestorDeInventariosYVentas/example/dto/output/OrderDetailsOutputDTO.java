@@ -5,6 +5,7 @@ import gestorDeInventariosYVentas.example.model.Product;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.aspectj.weaver.ast.Or;
 
 @Getter
 @Setter
@@ -17,15 +18,15 @@ public class OrderDetailsOutputDTO {
 
     private Double subTotal;
 
-    private Long product;
+    private Long productId;
 
-    private Long order;
+    private Long orderId;
 
-    public OrderDetailsOutputDTO(Long id, Long quantity, Double subTotal, Long product, Long order) {
+    public OrderDetailsOutputDTO(Long id, Long quantity, Double subTotal, Long productId, Long orderId) {
         this.id = id;
         this.quantity = quantity;
         this.subTotal = subTotal;
-        this.product = product;
-        this.order = order;
+        this.productId = productId;
+        this.orderId = orderId;
     }
 }

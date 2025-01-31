@@ -19,8 +19,6 @@ public interface OrderService {
 
     void removeOrderDetails(Long idOrder,Long idOrderDetails);
 
-    void changeStatus(Long id,Order.Status newStatus);
-
     CustomerOutputDTO getCustomer(Long id);
 
     OrderOutputDTO getOrder(Long id);
