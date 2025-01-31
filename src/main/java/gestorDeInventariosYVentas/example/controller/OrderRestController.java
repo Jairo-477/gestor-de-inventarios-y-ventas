@@ -1,11 +1,13 @@
 package gestorDeInventariosYVentas.example.controller;
 
+import gestorDeInventariosYVentas.example.controller.controllerDoc.OrderRestControllerDoc;
 import gestorDeInventariosYVentas.example.dto.input.OrderInputDTO;
 import gestorDeInventariosYVentas.example.dto.output.CustomerOutputDTO;
 import gestorDeInventariosYVentas.example.dto.output.OrderDetailsOutputDTO;
 import gestorDeInventariosYVentas.example.dto.output.OrderOutputDTO;
 import gestorDeInventariosYVentas.example.model.Order;
 import gestorDeInventariosYVentas.example.service.OrderService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +16,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/orders")
-public class OrderRestController {
+@Tag( name = "Order RestController", description = "Controller for order")
+public class OrderRestController implements OrderRestControllerDoc {
 
     private final OrderService orderService;
 
@@ -33,13 +36,13 @@ public class OrderRestController {
         return ResponseEntity.ok().body("Total calculated successfully.");
     }
 
-    @PatchMapping("/{idOrder}/add-order-details/{idOrderDetails}")
+    @PatchMapping("/{idOrder}/order-details/{idOrderDetails}")
     public ResponseEntity<String> addOrderDetail(@PathVariable Long idOrder,@PathVariable Long idOrderDetails){
         orderService.addOrderDetail(idOrder,idOrderDetails);
         return ResponseEntity.ok().body("The orderDetails with ID " + idOrderDetails + " has been added to the order with ID " + idOrder);
     }
 
-    @PatchMapping("/{idOrder}/remove-order-details/{idOrderDetails}")
+    @DeleteMapping("/{idOrder}/order-details/{idOrderDetails}")
     public ResponseEntity<String> removeOrderDetails(@PathVariable Long idOrder,@PathVariable Long idOrderDetails){
         orderService.removeOrderDetails(idOrder,idOrderDetails);
         return ResponseEntity.ok().body("The order details with ID " + idOrderDetails +
