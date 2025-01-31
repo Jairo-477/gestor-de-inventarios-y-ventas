@@ -1,17 +1,20 @@
 package gestorDeInventariosYVentas.example.controller;
 
+import gestorDeInventariosYVentas.example.controller.controllerDoc.OrderDetailsRestControllerDoc;
 import gestorDeInventariosYVentas.example.dto.input.OrderDetailsInputDTO;
 import gestorDeInventariosYVentas.example.dto.output.OrderDetailsOutputDTO;
 import gestorDeInventariosYVentas.example.dto.output.ProductOutputDTO;
 import gestorDeInventariosYVentas.example.model.Product;
 import gestorDeInventariosYVentas.example.service.OrderDetailsService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/orders-details")
-public class OrderDetailsRestController {
+@Tag( name = "Order Details RestController", description = "Controller for order details")
+public class OrderDetailsRestController implements OrderDetailsRestControllerDoc {
 
     private final OrderDetailsService orderDetailsService;
 
