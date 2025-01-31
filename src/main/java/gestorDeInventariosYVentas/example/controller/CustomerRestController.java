@@ -1,9 +1,11 @@
 package gestorDeInventariosYVentas.example.controller;
 
+import gestorDeInventariosYVentas.example.controller.controllerDoc.CustomerRestControllerDoc;
 import gestorDeInventariosYVentas.example.dto.input.CustomerInputDTO;
 import gestorDeInventariosYVentas.example.dto.output.CustomerOutputDTO;
 import gestorDeInventariosYVentas.example.dto.output.OrderOutputDTO;
 import gestorDeInventariosYVentas.example.service.CustomerService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +14,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/customers")
-public class CustomerRestController {
+@Tag( name = "Customer RestController", description = "Controller for customer")
+public class CustomerRestController implements CustomerRestControllerDoc {
 
     private final CustomerService customerService;
 

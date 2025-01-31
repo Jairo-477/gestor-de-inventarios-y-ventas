@@ -1,9 +1,7 @@
 package gestorDeInventariosYVentas.example.controller.controllerDoc;
 
 import gestorDeInventariosYVentas.example.dto.input.CategoryInputDTO;
-import gestorDeInventariosYVentas.example.dto.input.CustomerInputDTO;
 import gestorDeInventariosYVentas.example.dto.output.CategoryOutputDTO;
-import gestorDeInventariosYVentas.example.dto.output.CustomerOutputDTO;
 import gestorDeInventariosYVentas.example.dto.output.ProductOutputDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
