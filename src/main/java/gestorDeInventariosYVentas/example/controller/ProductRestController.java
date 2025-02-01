@@ -1,8 +1,10 @@
 package gestorDeInventariosYVentas.example.controller;
 
+import gestorDeInventariosYVentas.example.controller.controllerDoc.ProductRestControllerDoc;
 import gestorDeInventariosYVentas.example.dto.input.ProductInputDTO;
 import gestorDeInventariosYVentas.example.dto.output.ProductOutputDTO;
 import gestorDeInventariosYVentas.example.service.ProductService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +13,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/products")
-public class ProductRestController {
+@Tag( name = "Product RestController", description = "Controller for product")
+public class ProductRestController implements ProductRestControllerDoc {
 
     private final ProductService productService;
 

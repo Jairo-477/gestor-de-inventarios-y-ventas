@@ -1,9 +1,9 @@
 package gestorDeInventariosYVentas.example.controller.controllerDoc;
 
-import gestorDeInventariosYVentas.example.dto.input.OrderInputDTO;
-import gestorDeInventariosYVentas.example.dto.output.CustomerOutputDTO;
+import gestorDeInventariosYVentas.example.dto.input.OrderDetailsInputDTO;
+import gestorDeInventariosYVentas.example.dto.input.ProductInputDTO;
 import gestorDeInventariosYVentas.example.dto.output.OrderDetailsOutputDTO;
-import gestorDeInventariosYVentas.example.dto.output.OrderOutputDTO;
+import gestorDeInventariosYVentas.example.dto.output.ProductOutputDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -17,23 +17,28 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
-public interface OrderRestControllerDoc {
+public interface ProductRestControllerDoc {
 
     @Operation(
-            summary = "Create order",
-            description = "This method allows creating a new order.",
+            summary = "Create product",
+            description = "This method allows creating a new product.",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
-                    description = "requires receiving the following attributes: name, email, address, phoneNumber",
+                    description = "requires receiving the following attributes: name, description, price, stock, " +
+                            "category ID, creation date",
                     required = true,
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = OrderInputDTO.class),
+                            schema = @Schema(implementation = ProductInputDTO.class),
                             examples = {
                                     @ExampleObject(
                                             name = "Example input",
                                             value = "{" +
-                                                    "\"date\":\"2025-01-25T15:30:00\"," +
-                                                    "\"customer\": { \"id\" : 1 }" +
+                                                    "\"name\": \"GTA V\"," +
+                                                    "\"description\": \"video game\"," +
+                                                    "\"price\": 250," +
+                                                    "\"stock\": 18," +
+                                                    "\"category\": { \"id\" : 1 }," +
+                                                    "\"creationDate\": \"2025-01-25T15:30:00\"" +
                                                     "}"
                                     )
                             }
@@ -44,16 +49,18 @@ public interface OrderRestControllerDoc {
                             responseCode = "201",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = OrderOutputDTO.class),
+                                    schema = @Schema(implementation = ProductOutputDTO.class),
                                     examples = {
                                             @ExampleObject(
                                                     name = "Example response",
                                                     value = "{" +
                                                             "\"id\": 1," +
-                                                            "\"date\":\"2025-01-25T15:30:00\"," +
-                                                            "\"total\": 892.5," +
-                                                            "\"status\":\"PENDING\"," +
-                                                            "\"customerId\": 1" +
+                                                            "\"name\": \"GTA V\"," +
+                                                            "\"description\": \"video game\"," +
+                                                            "\"price\": 250," +
+                                                            "\"stock\": 18," +
+                                                            "\"category\": { \"id\" : 1 }," +
+                                                            "\"creationDate\": \"2025-01-25T15:30:00\"" +
                                                             "}"
                                             )
                                     }
@@ -73,17 +80,16 @@ public interface OrderRestControllerDoc {
                     )
             }
     )
-    ResponseEntity<OrderOutputDTO> createOrder(@RequestBody OrderInputDTO orderInputDTO);
+    ResponseEntity<ProductOutputDTO> createProduct(@RequestBody ProductInputDTO productInputDTO);
 
     @Operation(
-            summary = "Calculate total",
-            description = "This method sums the subtotals of the order details and adds the taxes to calculate" +
-                    " the total of the order.",
+            summary = "Get stock",
+            description = "This method returns the available stock quantity of a product.",
             parameters = {
                     @Parameter(
                             name = "id",
-                            description = "The unique ID of the order to retrieve. This ID corresponds" +
-                                    " to an existing order in the system..",
+                            description = "The unique ID of the product to retrieve. This ID corresponds" +
+                                    " to an existing product in the system.",
                             example = "2",
                             in = ParameterIn.PATH
                     )
@@ -96,7 +102,7 @@ public interface OrderRestControllerDoc {
                                     examples = {
                                             @ExampleObject(
                                                     name = "Example response",
-                                                    value = "Total calculated successfully."
+                                                    value = "The stock quantity of the product is: 18"
                                             )
                                     }
                             )
@@ -109,7 +115,7 @@ public interface OrderRestControllerDoc {
                                             example = "{\"localDateTime\":\"2024-12-13 15:30:00\"," +
                                                     " \"status\" : \"404\"," +
                                                     " \"error\" : \"Not Found\"," +
-                                                    " \"message\" : \"Order with ID 2 not found\"}"
+                                                    " \"message\" : \"Product with ID 2 not found\"}"
                                     )
                             )
                     ),
@@ -118,33 +124,32 @@ public interface OrderRestControllerDoc {
                             content = @Content(
                                     mediaType = "application/json",
                                     schema = @Schema(
-                                            example = "{\"localDateTime\":\"2024-12-13 15:30:00\"," +
+                                            example = "{\"localDateTime\":\"2024-12-13T15:30:00\"," +
                                                     " \"status\" : \"400\"," +
                                                     " \"error\" : \"NullPointerException\"," +
-                                                    " \"message\" : \"ID cannot be null\"}"
+                                                    " \"message\" : \"Product ID cannot be null.\"}"
                                     )
                             )
                     )
             }
     )
-    ResponseEntity<String> calculateTotal(@PathVariable Long id);
+    ResponseEntity<String> getStock(@PathVariable Long id);
 
     @Operation(
-            summary = "Add order details",
-            description = "This method allows linking an order detail to a previously created order.",
+            summary = "Reduce stock",
+            description = "This method allows reducing the stock of a product.",
             parameters = {
                     @Parameter(
-                            name = "idOrder",
-                            description = "The unique ID of the order to retrieve. This ID corresponds" +
-                                    " to an existing order in the system..",
+                            name = "id",
+                            description = "The unique ID of the product to retrieve. This ID corresponds" +
+                                    " to an existing product in the system.",
                             example = "2",
                             in = ParameterIn.PATH
                     ),
                     @Parameter(
-                            name = "idOrderDetails",
-                            description = "The unique ID of the order to retrieve. This ID corresponds" +
-                                    " to an existing order in the system..",
-                            example = "5",
+                            name = "quantity",
+                            description = "The stock quantity we want to reduce from the product's current stock.",
+                            example = "7",
                             in = ParameterIn.PATH
                     )
             },
@@ -156,7 +161,7 @@ public interface OrderRestControllerDoc {
                                     examples = {
                                             @ExampleObject(
                                                     name = "Example response",
-                                                    value = "The orderDetails with ID 5 has been added to the order with ID 2"
+                                                    value = "The stock of the product with the ID 2 has been reduced."
                                             )
                                     }
                             )
@@ -169,7 +174,7 @@ public interface OrderRestControllerDoc {
                                             example = "{\"localDateTime\":\"2024-12-13 15:30:00\"," +
                                                     " \"status\" : \"404\"," +
                                                     " \"error\" : \"Not Found\"," +
-                                                    " \"message\" : \"Order / Order Details with ID 2 not found\"}"
+                                                    " \"message\" : \"Product with ID 2 not found\"}"
                                     )
                             )
                     ),
@@ -178,33 +183,32 @@ public interface OrderRestControllerDoc {
                             content = @Content(
                                     mediaType = "application/json",
                                     schema = @Schema(
-                                            example = "{\"localDateTime\":\"2024-12-13 15:30:00\"," +
+                                            example = "{\"localDateTime\":\"2024-12-13T15:30:00\"," +
                                                     " \"status\" : \"400\"," +
                                                     " \"error\" : \"NullPointerException\"," +
-                                                    " \"message\" : \"ID cannot be null\"}"
+                                                    " \"message\" : \"Product / quantity cannot be null.\"}"
                                     )
                             )
                     )
             }
     )
-    ResponseEntity<String> addOrderDetail(@PathVariable Long idOrder,@PathVariable Long idOrderDetails);
+    ResponseEntity<String> reduceStock(@PathVariable Long id,@PathVariable Long quantity);
 
     @Operation(
-            summary = "Remove order details",
-            description = "This method allows removing/unlinking an order detail from an order.",
+            summary = "Increase stock",
+            description = "This method allows increase the stock of a product.",
             parameters = {
                     @Parameter(
-                            name = "idOrder",
-                            description = "The unique ID of the order to retrieve. This ID corresponds" +
-                                    " to an existing order in the system..",
+                            name = "id",
+                            description = "The unique ID of the product to retrieve. This ID corresponds" +
+                                    " to an existing product in the system.",
                             example = "2",
                             in = ParameterIn.PATH
                     ),
                     @Parameter(
-                            name = "idOrderDetails",
-                            description = "The unique ID of the order to retrieve. This ID corresponds" +
-                                    " to an existing order in the system..",
-                            example = "5",
+                            name = "quantity",
+                            description = "The stock quantity we want to increase from the product's current stock.",
+                            example = "7",
                             in = ParameterIn.PATH
                     )
             },
@@ -216,7 +220,7 @@ public interface OrderRestControllerDoc {
                                     examples = {
                                             @ExampleObject(
                                                     name = "Example response",
-                                                    value = "The order details with ID  5 has been removed from the order with ID 2"
+                                                    value = "The stock of the product with the ID 2 has been increased."
                                             )
                                     }
                             )
@@ -229,7 +233,7 @@ public interface OrderRestControllerDoc {
                                             example = "{\"localDateTime\":\"2024-12-13 15:30:00\"," +
                                                     " \"status\" : \"404\"," +
                                                     " \"error\" : \"Not Found\"," +
-                                                    " \"message\" : \"Order / Order Details with ID 2 not found\"}"
+                                                    " \"message\" : \"Product with ID 2 not found\"}"
                                     )
                             )
                     ),
@@ -238,44 +242,146 @@ public interface OrderRestControllerDoc {
                             content = @Content(
                                     mediaType = "application/json",
                                     schema = @Schema(
-                                            example = "{\"localDateTime\":\"2024-12-13 15:30:00\"," +
+                                            example = "{\"localDateTime\":\"2024-12-13T15:30:00\"," +
                                                     " \"status\" : \"400\"," +
                                                     " \"error\" : \"NullPointerException\"," +
-                                                    " \"message\" : \"ID cannot be null\"}"
+                                                    " \"message\" : \"Product / quantity cannot be null.\"}"
                                     )
                             )
                     )
             }
     )
-    ResponseEntity<String> removeOrderDetails(@PathVariable Long idOrder,@PathVariable Long idOrderDetails);
+    ResponseEntity<String> increaseStock(@PathVariable Long id,@PathVariable Long quantity);
 
     @Operation(
-            summary = "Get customer",
-            description = "This method returns the customer to whom the order belongs.",
-            parameters ={
-                @Parameter(
-                    name = "id",
-                    description = "The unique ID of the order to retrieve. This ID corresponds" +
-                            " to an existing order in the system..",
-                    example = "2",
-                    in = ParameterIn.PATH
-                )
+            summary = "Get price",
+            description = "This method returns the price of the product.",
+            parameters = {
+                    @Parameter(
+                            name = "id",
+                            description = "The unique ID of the product to retrieve. This ID corresponds" +
+                                    " to an existing product in the system.",
+                            example = "2",
+                            in = ParameterIn.PATH
+                    )
+            },
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            content = @Content(
+                                    mediaType = "text/plain",
+                                    examples = {
+                                            @ExampleObject(
+                                                    name = "Example response",
+                                                    value = "the price of the product is: 250.0"
+                                            )
+                                    }
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(
+                                            example = "{\"localDateTime\":\"2024-12-13 15:30:00\"," +
+                                                    " \"status\" : \"404\"," +
+                                                    " \"error\" : \"Not Found\"," +
+                                                    " \"message\" : \"Product with ID 2 not found\"}"
+                                    )
+                            )
+                    )
+            }
+    )
+    ResponseEntity<String> getPrice(@PathVariable Long id);
+
+    @Operation(
+            summary = "Update price",
+            description = "This method returns the price of the product.",
+            parameters = {
+                    @Parameter(
+                            name = "id",
+                            description = "The unique ID of the product to retrieve. This ID corresponds" +
+                                    " to an existing product in the system.",
+                            example = "2",
+                            in = ParameterIn.PATH
+                    ),
+                    @Parameter(
+                            name = "newPrice",
+                            description = "The new price of the product is specified.",
+                            example = "200",
+                            in = ParameterIn.PATH
+                    )
+            },
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            content = @Content(
+                                    mediaType = "text/plain",
+                                    examples = {
+                                            @ExampleObject(
+                                                    name = "Example response",
+                                                    value = "The price of the product with ID 2 has been updated."
+                                            )
+                                    }
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(
+                                            example = "{\"localDateTime\":\"2024-12-13 15:30:00\"," +
+                                                    " \"status\" : \"404\"," +
+                                                    " \"error\" : \"Not Found\"," +
+                                                    " \"message\" : \"Product with ID 2 not found\"}"
+                                    )
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(
+                                            example = "{\"localDateTime\":\"2024-12-13T15:30:00\"," +
+                                                    " \"status\" : \"400\"," +
+                                                    " \"error\" : \"NullPointerException\"," +
+                                                    " \"message\" : \"Product / price cannot be null.\"}"
+                                    )
+                            )
+                    )
+            }
+    )
+    ResponseEntity<String> updatePrice(@PathVariable Long id,@PathVariable Double newPrice);
+
+    @Operation(
+            summary = "Get product",
+            description = "This method returns a DTO of the product.",
+            parameters = {
+                    @Parameter(
+                            name = "id",
+                            description = "The unique ID of the product to retrieve. This ID corresponds" +
+                                    " to an existing product in the system.",
+                            example = "2",
+                            in = ParameterIn.PATH
+                    )
             },
             responses = {
                     @ApiResponse(
                             responseCode = "200",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = CustomerOutputDTO.class),
+                                    schema = @Schema(implementation = ProductOutputDTO.class),
                                     examples = {
                                             @ExampleObject(
                                                     name = "Example response",
                                                     value = "{" +
                                                             "\"id\": 1," +
-                                                            "\"name\":\"Julian Contreras\"," +
-                                                            "\"email\":\"contreju@gmail.com\"," +
-                                                            "\"address\":\"mz 22 cs 3\"," +
-                                                            "\"phoneNumber\":\"564897\"" +
+                                                            "\"name\": \"GTA V\"," +
+                                                            "\"description\": \"video game\"," +
+                                                            "\"price\": 250," +
+                                                            "\"stock\": 18," +
+                                                            "\"category\": { \"id\" : 1 }," +
+                                                            "\"creationDate\": \"2025-01-25T15:30:00\"" +
                                                             "}"
                                             )
                                     }
@@ -289,7 +395,7 @@ public interface OrderRestControllerDoc {
                                             example = "{\"localDateTime\":\"2024-12-13 15:30:00\"," +
                                                     " \"status\" : \"404\"," +
                                                     " \"error\" : \"Not Found\"," +
-                                                    " \"message\" : \"Order / Order Details with ID 2 not found\"}"
+                                                    " \"message\" : \"Product ID cannot be null.\"}"
                                     )
                             )
                     ),
@@ -300,23 +406,23 @@ public interface OrderRestControllerDoc {
                                     schema = @Schema(
                                             example = "{\"localDateTime\":\"2024-12-13 15:30:00\"," +
                                                     " \"status\" : \"400\"," +
-                                                    " \"error\" : \"NullPointerException\"," +
-                                                    " \"message\" : \"ID cannot be null\"}"
+                                                    " \"error\" : \"Invalid JSON Format\"," +
+                                                    " \"message\" : \"The JSON payload is malformed. Ensure it is well-formed and properly structured.\"}"
                                     )
                             )
                     )
             }
     )
-    ResponseEntity<CustomerOutputDTO> getCustomer(@PathVariable Long id);
+    ResponseEntity<ProductOutputDTO> getProduct(@PathVariable Long id);
 
     @Operation(
-            summary = "Get order",
-            description = "This method returns a DTO of the order.",
-            parameters ={
+            summary = "Get all products",
+            description = "This method returns all created products.",
+            parameters = {
                     @Parameter(
                             name = "id",
-                            description = "The unique ID of the order to retrieve. This ID corresponds" +
-                                    " to an existing order in the system..",
+                            description = "The unique ID of the product to retrieve. This ID corresponds" +
+                                    " to an existing product in the system.",
                             example = "2",
                             in = ParameterIn.PATH
                     )
@@ -326,212 +432,35 @@ public interface OrderRestControllerDoc {
                             responseCode = "200",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = OrderOutputDTO.class),
-                                    examples = {
-                                            @ExampleObject(
-                                                    name = "Example response",
-                                                    value = "{" +
-                                                            "\"id\": 2," +
-                                                            "\"date\":\"2025-01-25T15:30:00\"," +
-                                                            "\"total\": 892.5," +
-                                                            "\"status\":\"PENDING\"," +
-                                                            "\"customerId\": 1" +
-                                                            "}"
-                                            )
-                                    }
-                            )
-                    ),
-                    @ApiResponse(
-                            responseCode = "404",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(
-                                            example = "{\"localDateTime\":\"2024-12-13 15:30:00\"," +
-                                                    " \"status\" : \"404\"," +
-                                                    " \"error\" : \"Not Found\"," +
-                                                    " \"message\" : \"Order with ID 2 not found\"}"
-                                    )
-                            )
-                    ),
-                    @ApiResponse(
-                            responseCode = "400",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(
-                                            example = "{\"localDateTime\":\"2024-12-13 15:30:00\"," +
-                                                    " \"status\" : \"400\"," +
-                                                    " \"error\" : \"NullPointerException\"," +
-                                                    " \"message\" : \"ID cannot be null\"}"
-                                    )
-                            )
-                    )
-            }
-    )
-    ResponseEntity<OrderOutputDTO> getOrder(@PathVariable Long id);
-
-    @Operation(
-            summary = "Get orders details by order ",
-            description = "This method returns all order details that are linked to an order.",
-            parameters ={
-                    @Parameter(
-                            name = "id",
-                            description = "The unique ID of the order to retrieve. This ID corresponds" +
-                                    " to an existing order in the system..",
-                            example = "2",
-                            in = ParameterIn.PATH
-                    )
-            },
-            responses = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(implementation = OrderDetailsOutputDTO.class),
+                                    schema = @Schema(implementation = ProductOutputDTO.class),
                                     examples = {
                                             @ExampleObject(
                                                     name = "Example response",
                                                     value = "["+
                                                             "{" +
                                                             "\"id\": 1," +
-                                                            "\"quantity\": 2," +
-                                                            "\"subtotal\": 250," +
-                                                            "\"product\": { \"id\" : 1 }," +
-                                                            "\"order\": { \"id\" : 2 }" +
+                                                            "\"name\": \"GTA V\"," +
+                                                            "\"description\": \"video game\"," +
+                                                            "\"price\": 250," +
+                                                            "\"stock\": 18," +
+                                                            "\"category\": { \"id\" : 1 }," +
+                                                            "\"creationDate\": \"2025-01-25T15:30:00\"" +
                                                             "},"+
-                                                            "{" +
-                                                            "\"id\": 3," +
-                                                            "\"quantity\": 4," +
-                                                            "\"subtotal\": 560," +
-                                                            "\"product\": { \"id\" : 5 }," +
-                                                            "\"order\": { \"id\" : 2 }" +
+                                                            "{"+
+                                                            "\"id\": 2," +
+                                                            "\"name\": \"Minecraft\"," +
+                                                            "\"description\": \"video game\"," +
+                                                            "\"price\": 130," +
+                                                            "\"stock\": 7," +
+                                                            "\"category\": { \"id\" : 1 }," +
+                                                            "\"creationDate\": \"2025-01-25T15:30:00\"" +
                                                             "}"+
                                                             "]"
                                             )
                                     }
                             )
-                    ),
-                    @ApiResponse(
-                            responseCode = "404",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(
-                                            example = "{\"localDateTime\":\"2024-12-13 15:30:00\"," +
-                                                    " \"status\" : \"404\"," +
-                                                    " \"error\" : \"Not Found\"," +
-                                                    " \"message\" : \"Order with ID 2 not found\"}"
-                                    )
-                            )
-                    ),
-                    @ApiResponse(
-                            responseCode = "400",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(
-                                            example = "{\"localDateTime\":\"2024-12-13 15:30:00\"," +
-                                                    " \"status\" : \"400\"," +
-                                                    " \"error\" : \"NullPointerException\"," +
-                                                    " \"message\" : \"ID cannot be null\"}"
-                                    )
-                            )
                     )
             }
     )
-    ResponseEntity<List<OrderDetailsOutputDTO>> getOrdersDetailsByOrder(@PathVariable Long id);
-
-    @Operation(
-            summary = "Complete order ",
-            description = "This method changes the order status from \"PENDING\" to \"COMPLETE\"",
-            parameters ={
-                    @Parameter(
-                            name = "id",
-                            description = "The unique ID of the order to retrieve. This ID corresponds" +
-                                    " to an existing order in the system..",
-                            example = "2",
-                            in = ParameterIn.PATH
-                    )
-            },
-            responses = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(implementation = OrderOutputDTO.class),
-                                    examples = {
-                                            @ExampleObject(
-                                                    name = "Example response",
-                                                    value = "{" +
-                                                            "\"id\": 2," +
-                                                            "\"date\":\"2025-01-25T15:30:00\"," +
-                                                            "\"total\": 892.5," +
-                                                            "\"status\":\"COMPLETE\"," +
-                                                            "\"customerId\": 1" +
-                                                            "}"
-                                            )
-                                    }
-                            )
-                    ),
-                    @ApiResponse(
-                            responseCode = "404",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(
-                                            example = "{\"localDateTime\":\"2024-12-13 15:30:00\"," +
-                                                    " \"status\" : \"404\"," +
-                                                    " \"error\" : \"Not Found\"," +
-                                                    " \"message\" : \"Order with ID 2 not found\"}"
-                                    )
-                            )
-                    ),
-                    @ApiResponse(
-                            responseCode = "400",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(
-                                            example = "{\"localDateTime\":\"2024-12-13 15:30:00\"," +
-                                                    " \"status\" : \"400\"," +
-                                                    " \"error\" : \"NullPointerException\"," +
-                                                    " \"message\" : \"ID cannot be null\"}"
-                                    )
-                            )
-                    )
-            }
-    )
-    ResponseEntity<OrderOutputDTO> completeOrder(@PathVariable Long id);
-
-    @Operation(
-            summary = "Get all orders",
-            description = "This method returns all order details that are linked to an order.",
-            responses = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(implementation = OrderOutputDTO.class),
-                                    examples = {
-                                            @ExampleObject(
-                                                    name = "Example response",
-                                                    value = "[" +
-                                                            "{" +
-                                                            "\"id\": 2," +
-                                                            "\"date\":\"2025-01-25T15:30:00\"," +
-                                                            "\"total\": 892.5," +
-                                                            "\"status\":\"PENDING\"," +
-                                                            "\"customerId\": 1" +
-                                                            "}," +
-                                                            "{" +
-                                                            "\"id\": 5," +
-                                                            "\"date\":\"2025-01-25T15:30:00\"," +
-                                                            "\"total\": 99.5," +
-                                                            "\"status\":\"COMPLETE\"," +
-                                                            "\"customerId\": 1" +
-                                                            "}" +
-                                                            "]"
-
-                                            )
-                                    }
-                            )
-                    )
-            }
-    )
-    ResponseEntity<List<OrderOutputDTO>> GetAllOrders();
+    ResponseEntity<List<ProductOutputDTO>> getAllProducts();
 }
